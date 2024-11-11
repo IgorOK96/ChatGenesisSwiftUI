@@ -10,11 +10,11 @@ struct PrimaryButton: View {
     let title: String
     let action: () -> Void
     let mod: Bool  // true dark style, false lite style
-    var supportText: String?
+    var supportText: String = ""
 
     var body: some View {
         VStack(alignment: .leading, spacing: 13) {
-                Text(supportText ?? "")
+                Text(supportText)
                     .font(.sansReg(20))
                 Button(action: { action() }) {
                     Text(title)
@@ -43,6 +43,6 @@ struct PressableButtonStyle: ButtonStyle {
     }
 }
 
-#Preview {
-    PrimaryButton(title: "Sign up", action: {}, mod: false, supportText: "Get started with")
-}
+//#Preview {
+//    PrimaryButton(title: "Sign up", action: {}, mod: false, supportText: "Get started with")
+//}

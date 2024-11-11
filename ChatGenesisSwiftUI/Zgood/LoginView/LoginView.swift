@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct LoginView: View {
-    @StateObject private var viewModel = SignUpViewModel()
+    @StateObject private var viewModel = LoginViewModel()
+    @State private var isPasswordValid = true
+    @State private var isEmailValid = true
     
     @State  private var emailGo = false
-    @State  private var chatGo = false
     
-    @State private var isNameValid = true
-    @State private var isEmailValid = true
+    @FocusState private var isFocused: Bool // Focus state for TextField
+
     
     var body: some View {
         NavigationStack {
@@ -27,13 +28,13 @@ struct LoginView: View {
                 ZStack {
                     PrimaryButton(
                         title:"Google",
-                        action: { },
+                        action: { viewModel.loginWithGoogle() },
                         mod: false,
                         supportText: "Login with")
                     Image("googleLogo")
                         .resizable()
                         .frame(width: 25, height: 25)
-                        .offset(x: -50, y: 16.5)
+                        .offset(x: -50, y: 19)
                 }
                 HStack {
                     Text("or")
@@ -44,23 +45,34 @@ struct LoginView: View {
                 
                 VStack(spacing: 10) {
                     TextFieldView(
-                        text: $viewModel.name,
-                        isValid: $isNameValid,
-                        placeholder: "Email",
-                        errorText: "Required field"
-                    )
-                    
-                    TextFieldView(
                         text: $viewModel.email,
                         isValid: $isEmailValid,
+                        placeholder: "Email",
+                        errorText: viewModel.logError
+                    )
+                    .autocorrectionDisabled(true)
+                    .textInputAutocapitalization(.never)
+                    
+                    TextFieldView(
+                        text: $viewModel.password,
+                        isValid: $isPasswordValid,
                         placeholder: "Password",
-                        errorText: "Invalid email format"
+                        errorText: "Wrong Password"
                     )
                     .autocorrectionDisabled(true)
                     .textInputAutocapitalization(.never)
                 }
                 
-                PrimaryButton(title:"Login", action: { chatGo = true }, mod: true)
+                PrimaryButton(
+                    title:"Login",
+                    action:{
+                        viewModel.updateLogError()
+                        isEmailValid = viewModel.loginFals
+                        isPasswordValid = viewModel.loginFals
+                        
+                        if viewModel.validLog { viewModel.login() }
+                    },
+                    mod: true)
                     .offset(y: -30)
                 
                 Spacer()
@@ -68,12 +80,16 @@ struct LoginView: View {
                 BottomButton(
                     textSupport: "Need an account?",
                     textButton: "Sign up",
-                    action: { emailGo = true
-                        print("Login >> Sign") })
+                    action: { emailGo = true })
             }
             .hideKeyboard()
             .navigationDestination(isPresented: $emailGo) { SignUpView() }
-            .navigationDestination(isPresented: $chatGo) { TabBarView() }
+            .navigationDestination(isPresented: $viewModel.loginSuccess) { TabBarView() }
+            .fullScreenCover(isPresented: $viewModel.isShowingGoogleSignIn) {
+                GoogleSignInViewControllerRepresentable { result in
+                    viewModel.handleSignInResult(result)
+                }
+            }
         }
     }
 }

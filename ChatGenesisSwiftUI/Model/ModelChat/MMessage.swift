@@ -7,7 +7,7 @@
 //
 
 import UIKit
-//import FirebaseFirestore
+import FirebaseFirestore
 import MessageKit
 
 struct MMessage: Hashable, MessageType {
@@ -62,6 +62,12 @@ struct MMessage: Hashable, MessageType {
     static func == (lhs: MMessage, rhs: MMessage) -> Bool {
         return lhs.messageId == rhs.messageId
     }
+}
+
+
+struct Sender: SenderType {
+    var senderId: String
+    var displayName: String
 }
 
 extension MMessage: Comparable {

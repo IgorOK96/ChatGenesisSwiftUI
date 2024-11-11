@@ -9,52 +9,58 @@ import SwiftUI
 
 struct SignUpView: View {
     @StateObject private var viewModel = SignUpViewModel()
-    
-    @State  private var chatGo = false
-    @State  private var loginGo = false
-    
-    @State private var isNameValid = true
     @State private var isEmailValid = true
-    @State private var isPhoneValid = true
-    @State private var isPhotoValid = true
+    @State private var isPassword = true
     
+    @State  private var loginGo = false
+
     @FocusState private var isFocused: Bool // Focus state for TextField
     
     var body: some View {
         NavigationStack {
             VStack() {
                 Spacer()
-                Text("Igor! Hello!")
+                Text("Hello! My Bro!")
                     .font(.sansReg(35))
                     .foregroundColor(.purpleDark)
                     .offset(y: -50)
                 
                 VStack(spacing: 13) {
                     TextFieldView(
-                        text: $viewModel.name,
-                        isValid: $isNameValid,
-                        placeholder: "Email",
-                        errorText: "Required field"
-                    )
-                    
-                    TextFieldView(
                         text: $viewModel.email,
                         isValid: $isEmailValid,
-                        placeholder: "Password",
+                        placeholder: "Email",
                         errorText: "Invalid email format"
                     )
                     .autocorrectionDisabled(true)
                     .textInputAutocapitalization(.never)
                     
                     TextFieldView(
-                        text: $viewModel.phone,
-                        isValid: $isPhoneValid,
-                        placeholder: "Confirm password",
-                        errorText: ""
+                        text: $viewModel.password,
+                        isValid: $isPassword,
+                        placeholder: "Password",
+                        errorText: "The passwords don't match"
                     )
+                    .autocorrectionDisabled(true)
+                    .textInputAutocapitalization(.never)
+                    
+                    TextFieldView(
+                        text: $viewModel.confirmPassword,
+                        isValid: $isPassword,
+                        placeholder: "Confirm password",
+                        errorText: "The passwords don't match"
+                    )
+                    .autocorrectionDisabled(true)
+                    .textInputAutocapitalization(.never)
                 }
-                
-                PrimaryButton(title: "Sign up", action: {chatGo = true}, mod: true)
+                PrimaryButton(
+                    title: "Sign up",
+                    action: {
+                        isEmailValid = viewModel.validateEmail
+                        isPassword = viewModel.isPasswordValid
+                        if viewModel.isFormValid  {viewModel.registerEmail()}
+                    },
+                    mod: true)
                     .offset(y: -10)
                 
                 Spacer()
@@ -63,12 +69,11 @@ struct SignUpView: View {
                     textSupport: "Already onboard?",
                     textButton: "Login",
                     action: { loginGo = true
-                        print("Sign >> Login")
                     })
             }
             .hideKeyboard()
+            .navigationDestination(isPresented: $viewModel.registrationSuccess) { SetupProfileView() }
             .navigationDestination(isPresented: $loginGo) { LoginView() }
-            .navigationDestination(isPresented: $chatGo) { SetupProfileView() }
         }
     }
 }

@@ -12,11 +12,12 @@ struct ConversationsView: View {
     @FocusState private var isFocused: Bool
     @State var isNew = false
     let imageNames = ["human1", "human2", "human3", "human4", "human5", "human6", "human7", "human8", "human9", "human10"]
-    
+    @State var setting = false
+
     // Определяем сетку для горизонтальной прокрутки
-    let horizontalColumns = [
-        GridItem(.flexible())
-    ]
+//    let horizontalColumns = [
+//        GridItem(.flexible())
+//    ]
     
     var filteredItems: [String] {
         if searchText.isEmpty {
@@ -28,8 +29,19 @@ struct ConversationsView: View {
     
     var body: some View {
         NavigationStack {
-            SearchControllerBar(searchText: $searchText)
-                .focused($isFocused)
+            HStack {
+                SearchControllerBar(searchText: $searchText)
+                    .focused($isFocused)
+                Button(action: {
+                    setting = true
+                }) {
+                    Image(systemName: "gearshape.fill")
+                        .resizable()
+                        .foregroundColor(.purpleLite)
+                        .frame(width: 29, height: 29)
+                        .offset(x: -15, y:  5)
+                }
+            }
             VStack(alignment: .leading, spacing: 20) {
                 
                 Text("16 chats confirmation waiting")
@@ -108,6 +120,9 @@ struct ConversationsView: View {
                     }
                     .padding(.horizontal, 20)
                 }
+            }
+            .sheet(isPresented: $setting) {
+                SetupProfileView()
             }
             .hideKeyboard()
         }

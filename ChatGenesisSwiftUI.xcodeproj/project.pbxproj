@@ -8,15 +8,34 @@
 
 /* Begin PBXBuildFile section */
 		9AA601EE2CE0C95400E51064 /* MessageKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9AA601ED2CE0C95400E51064 /* MessageKit */; };
+		9AA602012CE0CBC800E51064 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9AA602002CE0CBC800E51064 /* FirebaseAuth */; };
+		9AA602032CE0CBC800E51064 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9AA602022CE0CBC800E51064 /* FirebaseCore */; };
+		9AA602052CE0CBC800E51064 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9AA602042CE0CBC800E51064 /* FirebaseFirestore */; };
+		9AA602142CE0CE0C00E51064 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 9AA602132CE0CE0C00E51064 /* GoogleSignIn */; };
+		9AA602162CE0CE0C00E51064 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9AA602152CE0CE0C00E51064 /* GoogleSignInSwift */; };
+		9AA602452CE0DAFB00E51064 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 9AA602442CE0DAFB00E51064 /* FirebaseStorage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9A6F42CB2CDFCA590060910F /* ChatGenesisSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatGenesisSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		9AA602942CE1217300E51064 /* Exceptions for "ChatGenesisSwiftUI" folder in "ChatGenesisSwiftUI" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 9A6F42CA2CDFCA590060910F /* ChatGenesisSwiftUI */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		9A6F42CD2CDFCA590060910F /* ChatGenesisSwiftUI */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9AA602942CE1217300E51064 /* Exceptions for "ChatGenesisSwiftUI" folder in "ChatGenesisSwiftUI" target */,
+			);
 			path = ChatGenesisSwiftUI;
 			sourceTree = "<group>";
 		};
@@ -27,7 +46,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AA602142CE0CE0C00E51064 /* GoogleSignIn in Frameworks */,
 				9AA601EE2CE0C95400E51064 /* MessageKit in Frameworks */,
+				9AA602052CE0CBC800E51064 /* FirebaseFirestore in Frameworks */,
+				9AA602162CE0CE0C00E51064 /* GoogleSignInSwift in Frameworks */,
+				9AA602452CE0DAFB00E51064 /* FirebaseStorage in Frameworks */,
+				9AA602032CE0CBC800E51064 /* FirebaseCore in Frameworks */,
+				9AA602012CE0CBC800E51064 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				9A6F42CD2CDFCA590060910F /* ChatGenesisSwiftUI */,
+				9AA601FF2CE0CBC800E51064 /* Frameworks */,
 				9A6F42CC2CDFCA590060910F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,6 +74,13 @@
 				9A6F42CB2CDFCA590060910F /* ChatGenesisSwiftUI.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		9AA601FF2CE0CBC800E51064 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,6 +104,12 @@
 			name = ChatGenesisSwiftUI;
 			packageProductDependencies = (
 				9AA601ED2CE0C95400E51064 /* MessageKit */,
+				9AA602002CE0CBC800E51064 /* FirebaseAuth */,
+				9AA602022CE0CBC800E51064 /* FirebaseCore */,
+				9AA602042CE0CBC800E51064 /* FirebaseFirestore */,
+				9AA602132CE0CE0C00E51064 /* GoogleSignIn */,
+				9AA602152CE0CE0C00E51064 /* GoogleSignInSwift */,
+				9AA602442CE0DAFB00E51064 /* FirebaseStorage */,
 			);
 			productName = ChatGenesisSwiftUI;
 			productReference = 9A6F42CB2CDFCA590060910F /* ChatGenesisSwiftUI.app */;
@@ -102,6 +141,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				9AA601EC2CE0C95400E51064 /* XCRemoteSwiftPackageReference "MessageKit" */,
+				9AA601FE2CE0CB2500E51064 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				9AA602122CE0CE0C00E51064 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9A6F42CC2CDFCA590060910F /* Products */;
@@ -263,6 +304,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"ChatGenesisSwiftUI/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChatGenesisSwiftUI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -295,6 +337,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"ChatGenesisSwiftUI/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChatGenesisSwiftUI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -349,6 +392,22 @@
 				minimumVersion = 4.3.0;
 			};
 		};
+		9AA601FE2CE0CB2500E51064 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.4.0;
+			};
+		};
+		9AA602122CE0CE0C00E51064 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -356,6 +415,36 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9AA601EC2CE0C95400E51064 /* XCRemoteSwiftPackageReference "MessageKit" */;
 			productName = MessageKit;
+		};
+		9AA602002CE0CBC800E51064 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AA601FE2CE0CB2500E51064 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		9AA602022CE0CBC800E51064 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AA601FE2CE0CB2500E51064 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		9AA602042CE0CBC800E51064 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AA601FE2CE0CB2500E51064 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		9AA602132CE0CE0C00E51064 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AA602122CE0CE0C00E51064 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		9AA602152CE0CE0C00E51064 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AA602122CE0CE0C00E51064 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		9AA602442CE0DAFB00E51064 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AA601FE2CE0CB2500E51064 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

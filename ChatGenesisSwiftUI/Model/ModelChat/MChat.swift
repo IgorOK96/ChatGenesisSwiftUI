@@ -7,7 +7,7 @@
 //
 
 import UIKit
-//import FirebaseFirestore
+import FirebaseFirestore
 
 struct MChat: Hashable, Decodable {
     var friendUsername: String

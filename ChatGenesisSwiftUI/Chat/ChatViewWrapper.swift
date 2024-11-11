@@ -7,21 +7,21 @@
 
 import SwiftUI
 import MessageKit
-//import FirebaseFirestore
+import FirebaseFirestore
 
-struct ChatViewWrapper: UIViewControllerRepresentable {
-    let user: MUser
-    let chat: MChat
+//struct ChatViewWrapper: UIViewControllerRepresentable {
+//    let user: MUser
+//    let chat: MChat
+//
+//    func makeUIViewController(context: Context) -> ChatsViewController {
+//        return ChatsViewController(user: user, chat: chat)
+//    }
+//
+//    func updateUIViewController(_ uiViewController: ChatsViewController, context: Context) {
+//        // Здесь можно добавлять обновление данных, если потребуется.
+//    }
+//}
 
-    func makeUIViewController(context: Context) -> ChatsViewController {
-        return ChatsViewController(user: user, chat: chat)
-    }
-
-    func updateUIViewController(_ uiViewController: ChatsViewController, context: Context) {
-        // Здесь можно добавлять обновление данных, если потребуется.
-    }
-}
-
-#Preview {
-    ChatViewWrapper()
-}
+//#Preview {
+//    ChatViewWrapper()
+//}

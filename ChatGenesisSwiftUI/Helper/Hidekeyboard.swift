@@ -39,3 +39,18 @@ extension CGFloat {
         return (screenWidth - spacing * 3) / 2 // Учитываем отступы по бокам и между колонками
     }
 }
+
+extension UIImage {
+    func scaledToSafeUploadSize(maxSize: CGFloat = 1024) -> UIImage? {
+        let largerDimension = max(size.width, size.height)
+        let scale = largerDimension > maxSize ? maxSize / largerDimension : 1.0
+        let newSize = CGSize(width: size.width * scale, height: size.height * scale)
+        
+        UIGraphicsBeginImageContextWithOptions(newSize, true, 0.0)
+        defer { UIGraphicsEndImageContext() }
+        
+        draw(in: CGRect(origin: .zero, size: newSize))
+        
+        return UIGraphicsGetImageFromCurrentImageContext()
+    }
+}

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct PeopleListView: View {
+    @StateObject private var viewModel = SignUpViewModel()
+    
     @State private var searchText = ""
     @FocusState private var isFocused: Bool
 
@@ -38,7 +40,6 @@ struct PeopleListView: View {
             VStack {
                 SearchControllerBar(searchText: $searchText)
                     .focused($isFocused)
-                
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
                         // Вертикальная секция
@@ -70,7 +71,7 @@ struct PeopleListView: View {
                     }
                     .hideKeyboard()
                 }
-            }
+            }.onAppear { viewModel.loadUserProfile() }
         }
     }
 }

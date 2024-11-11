@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct ChatView: View {
-    let user: MUser
-    let chat: MChat
+//struct ChatView: View {
+//    let user: MUser
+//    let chat: MChat
+//
+//    var body: some View {
+//        ChatViewWrapper(user: user, chat: chat)
+//            .edgesIgnoringSafeArea(.all) // Настройка для полноэкранного отображения
+//    }
+//}
 
-    var body: some View {
-        ChatViewWrapper(user: user, chat: chat)
-            .edgesIgnoringSafeArea(.all) // Настройка для полноэкранного отображения
-    }
-}
-
-#Preview {
-    ChatView()
-}
+//#Preview {
+//    ChatView()
+//}
