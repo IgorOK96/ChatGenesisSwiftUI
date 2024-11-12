@@ -27,6 +27,15 @@ struct MUser: Hashable, Codable {
         self.id = id
     }
     
+    init(id: String, username: String) {
+        self.id = id
+        self.username = username
+        self.email = ""
+        self.avatarStringURL = ""
+        self.description = ""
+        self.sex = ""
+    }
+    
     init?(document: DocumentSnapshot) {
         guard let data = document.data() else { return nil}
         guard let username = data["username"] as? String,

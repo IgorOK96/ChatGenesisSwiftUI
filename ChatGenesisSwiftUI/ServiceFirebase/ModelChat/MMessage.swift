@@ -10,49 +10,57 @@ import UIKit
 import FirebaseFirestore
 import MessageKit
 
-struct MMessage: Hashable, MessageType, Identifiable {
-   
+struct MMessage: Hashable, MessageType, Identifiable, Comparable {
     let content: String
     var sender: SenderType
     var sentDate: Date
     let id: String?
-    
+    let isImage: Bool
+
     var messageId: String {
         return id ?? UUID().uuidString
     }
-    
+
     var kind: MessageKind {
-        return .text(content)
+        return isImage ? .photo(Media(url: URL(string: content), image: nil, placeholderImage: UIImage(systemName: "photo")!, size: CGSize(width: 240, height: 240))) : .text(content)
+    }
+
+    // Реализация протокола Comparable
+    static func < (lhs: MMessage, rhs: MMessage) -> Bool {
+        return lhs.sentDate < rhs.sentDate
     }
     
-    init(user: MUser, content: String) {
+    init(user: MUser, content: String, isImage: Bool = false) {
         self.content = content
-        sender = Sender(senderId: user.id, displayName: user.username)
-        sentDate = Date()
-        id = nil
+        self.isImage = isImage
+        self.sender = Sender(senderId: user.id, displayName: user.username)
+        self.sentDate = Date()
+        self.id = nil
     }
-    
+
     init?(document: QueryDocumentSnapshot) {
         let data = document.data()
         guard let sentDate = data["created"] as? Timestamp else { return nil }
         guard let senderId = data["senderID"] as? String else { return nil }
         guard let senderName = data["senderName"] as? String else { return nil }
         guard let content = data["content"] as? String else { return nil }
-        
+        let isImage = data["isImage"] as? Bool ?? false
+
         self.id = document.documentID
         self.sentDate = sentDate.dateValue()
-        sender = Sender(senderId: senderId, displayName: senderName)
+        self.sender = Sender(senderId: senderId, displayName: senderName)
         self.content = content
+        self.isImage = isImage
     }
-    
+
     var representation: [String: Any] {
-        let rep: [String: Any] = [
+        return [
             "created": sentDate,
             "senderID": sender.senderId,
             "senderName": sender.displayName,
-            "content": content
+            "content": content,
+            "isImage": isImage
         ]
-        return rep
     }
     
     func hash(into hasher: inout Hasher) {
@@ -64,14 +72,15 @@ struct MMessage: Hashable, MessageType, Identifiable {
     }
 }
 
+// Дополнительная структура для поддержки .photo типа в MessageKind
+struct Media: MediaItem {
+    var url: URL?
+    var image: UIImage?
+    var placeholderImage: UIImage
+    var size: CGSize
+}
 
 struct Sender: SenderType {
     var senderId: String
     var displayName: String
-}
-
-extension MMessage: Comparable {
-    static func < (lhs: MMessage, rhs: MMessage) -> Bool {
-        return lhs.sentDate < rhs.sentDate
-    }
 }

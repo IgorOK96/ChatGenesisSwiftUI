@@ -72,6 +72,25 @@ class ActiveChatsListViewModel: ObservableObject {
         return subject.eraseToAnyPublisher()
     }
 
+    private func activeChatsPublisher() -> AnyPublisher<[MUser], Never> {
+        let subject = PassthroughSubject<[MUser], Never>()
+
+        activeChatsRef.addSnapshotListener { (querySnapshot, error) in
+            if let error = error {
+                print("Ошибка получения активных чатов: \(error.localizedDescription)")
+                subject.send([])
+            } else {
+                let chats = querySnapshot?.documents.compactMap { MUser(document: $0) } ?? []
+                subject.send(chats)
+                
+                // Загружаем изображения для чатов после каждого обновления
+                self.loadImagesForActiveChats()
+            }
+        }
+
+        return subject.eraseToAnyPublisher()
+    }
+    
     // Методы для загрузки изображений активных чатов
     private func loadImagesForActiveChats() {
         for chat in activeChats {

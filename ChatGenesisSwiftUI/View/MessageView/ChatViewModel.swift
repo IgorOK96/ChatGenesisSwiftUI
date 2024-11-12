@@ -8,10 +8,13 @@
 import SwiftUI
 import FirebaseFirestore
 import Combine
+import FirebaseStorage
 
 class ChatViewModel: ObservableObject {
     @Published var messages: [MMessage] = []
     @Published var text: String = ""
+    @Published var sendImage: UIImage?
+
 
     // Объединенный массив с меткой отправителя
     @Published var combinedMessagesWithSender: [(message: MMessage, isCurrentUser: Bool)] = []
@@ -49,19 +52,44 @@ class ChatViewModel: ObservableObject {
         messageListener?.remove()
     }
 
-    func sendMessage() {
-        let message = MMessage(user: user, content: text)
-        FirestoreService.shared.sendMessage(chat: chat, message: message) { result in
-            switch result {
-            case .success:
-                DispatchQueue.main.async {
-                    self.text = ""
+    func sendImageMessage(image: UIImage) {
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else { return }
+        let imageName = UUID().uuidString
+        let ref = Storage.storage().reference().child("chat_images").child("\(imageName).jpg")
+
+        ref.putData(imageData, metadata: nil) { [weak self] metadata, error in
+            if let error = error {
+                print("Ошибка загрузки изображения: \(error)")
+                return
+            }
+            
+            ref.downloadURL { url, error in
+                if let error = error {
+                    print("Ошибка получения URL: \(error)")
+                    return
                 }
-            case .failure(let error):
-                print(error.localizedDescription)
+                
+                if let url = url {
+                    let message = MMessage(user: self?.user ?? MUser(id: "unknown", username: "unknown"), content: url.absoluteString, isImage: true)
+                    self?.sendMessage(message: message)
+                }
             }
         }
     }
+    
+    func sendMessage(message: MMessage) {
+            // Метод для відправки повідомлення в Firestore
+            FirestoreService.shared.sendMessage(chat: chat, message: message) { result in
+                switch result {
+                case .success:
+                    DispatchQueue.main.async {
+                        self.text = ""
+                    }
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
     
     private func setupMessageFilter() {
         $messages

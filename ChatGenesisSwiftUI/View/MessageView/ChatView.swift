@@ -14,6 +14,11 @@ struct ChatView: View {
     @ObservedObject private var chatVM: ChatViewModel
     @State private var keyboardHeight: CGFloat = 0
     private var keyboardCancellable: AnyCancellable?
+    @State private var showConfirmationDialog = false
+    @State private var showImagePicker = false
+    @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
+    @State private var errorMessage: String?
+
     
     init(user: MUser, chat: MChat) {
         self.chatVM = ChatViewModel(user: user, chat: chat)
@@ -41,38 +46,73 @@ struct ChatView: View {
             }
             
             HStack {
-                TextField("Введите сообщение", text: $chatVM.text)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(minHeight: 30)
+                Button(action: {
+                    showImagePicker = true
+                }) {
+                    Image(systemName: "photo")
+                        .font(.system(size: 24))
+                        .foregroundColor(chatVM.sendImage == nil ? .blue : .orange)
+                }
+                
+                TextEditor(text: $chatVM.text)
+                    .frame(minHeight: 30, maxHeight: 100)
+                    .cornerRadius(8)
+                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray))
                 
                 Button(action: {
-                    chatVM.sendMessage()
+                    if let image = chatVM.sendImage {
+                        chatVM.sendImageMessage(image: image)
+                        chatVM.sendImage = nil
+                    } else {
+                        let message = MMessage(user: chatVM.user, content: chatVM.text)
+                        chatVM.sendMessage(message: message)
+                    }
                 }) {
                     Image(systemName: "paperplane.fill")
                         .font(.system(size: 24))
                 }
-                .disabled(chatVM.text.isEmpty)
+                .disabled(chatVM.text.isEmpty && chatVM.sendImage == nil)
+                .confirmationDialog("Choose how you want to add a photo  \n Size no more 5 Mb",
+                                    isPresented: $showConfirmationDialog, titleVisibility: .visible) {
+                    Button("Camera") {
+                        imagePickerSourceType = .camera
+                        showImagePicker = true
+                    }
+                    Button("Gallery") {
+                        imagePickerSourceType = .photoLibrary
+                        showImagePicker = true
+                    }
+                    Button("Cancel", role: .cancel) { }
+                }
+                .fullScreenCover(isPresented: $showImagePicker) {
+                    ImagePicker(
+                        sourceType: imagePickerSourceType,
+                        selectedImage: $chatVM.sendImage,
+                        errorMessage: $errorMessage
+                    )
+                }
             }
             .padding()
             .background(Color(UIColor.systemBackground))
         }
         .padding(.bottom, keyboardHeight)
+        .hideKeyboard()
         .animation(.easeOut(duration: 0.16), value: keyboardHeight)
         .edgesIgnoringSafeArea(keyboardHeight > 0 ? .bottom : [])
         .navigationBarTitle(chatVM.chat.friendUsername, displayMode: .inline)
         .onAppear {
             chatVM.subscribeToMessages()
         }
-        .onDisappear {
-            chatVM.unsubscribe()
-            stopObservingKeyboard()
+                .onDisappear {
+                    chatVM.unsubscribe()
+                    stopObservingKeyboard()
+                }
+        }
+        
+        private func stopObservingKeyboard() {
+            keyboardCancellable?.cancel()
         }
     }
-    
-    private func stopObservingKeyboard() {
-        keyboardCancellable?.cancel()
-    }
-}
 
 struct MessageRow: View {
     var message: MMessage
@@ -82,21 +122,40 @@ struct MessageRow: View {
         HStack {
             if isCurrentUser {
                 Spacer()
-                Text(message.content)
-                    .padding()
-                    .background(Color.purpleLite.opacity(0.7))
-                    .foregroundColor(.white)
-                    .cornerRadius(12)
+            }
+            
+            if message.isImage, let imageUrl = URL(string: message.content) {
+                // Отображаем изображение, если это сообщение с изображением
+                AsyncImage(url: imageUrl) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView() // Показать индикатор загрузки
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 200, height: 200)
+                            .cornerRadius(12)
+                    case .failure:
+                        Text("Не удалось загрузить изображение")
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
+                .frame(width: 200, height: 200)
             } else {
+                // Отображаем текст, если это обычное текстовое сообщение
                 Text(message.content)
                     .padding()
-                    .background(Color.orange.opacity(0.7))
-                    .foregroundColor(.black)
+                    .background(isCurrentUser ? Color.purpleLite.opacity(0.7) : Color.orange.opacity(0.7))
+                    .foregroundColor(isCurrentUser ? .white : .black)
                     .cornerRadius(12)
+            }
+            
+            if !isCurrentUser {
                 Spacer()
             }
         }
-        .frame(maxWidth: .infinity)
         .padding()
     }
 }
