@@ -72,7 +72,7 @@ struct SignUpView: View {
                     })
             }
             .hideKeyboard()
-            .navigationDestination(isPresented: $viewModel.registrationSuccess) { SetupProfileView() }
+            .navigationDestination(isPresented: $viewModel.registrationSuccess) { SetupProfileView(viewModel: viewModel) }
             .navigationDestination(isPresented: $loginGo) { LoginView() }
         }
     }
@@ -81,3 +81,4 @@ struct SignUpView: View {
 #Preview {
     SignUpView()
 }
+

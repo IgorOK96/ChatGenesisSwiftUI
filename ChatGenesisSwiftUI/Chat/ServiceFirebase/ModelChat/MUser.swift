@@ -17,6 +17,7 @@ struct MUser: Hashable, Codable {
     var sex: String
     var id: String
     
+    
     init(username: String, email: String, avatarStringURL: String, description: String, sex: String, id: String) {
         self.username = username
         self.email = email

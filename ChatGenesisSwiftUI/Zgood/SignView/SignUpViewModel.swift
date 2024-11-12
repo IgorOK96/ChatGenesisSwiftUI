@@ -6,13 +6,11 @@
 //
 
 import SwiftUI
-import FirebaseCore
 import FirebaseAuth
 import FirebaseFirestore
+import Combine
 
 class SignUpViewModel: ObservableObject {
-    @StateObject private var viewModelLogin = LoginViewModel()
-
     @Published var email = ""
     @Published var password = ""
     @Published var confirmPassword = ""
@@ -20,67 +18,61 @@ class SignUpViewModel: ObservableObject {
     @Published var description = ""
     @Published var selectedSex = 0
     @Published var avatarImage: UIImage?
-    @Published var avatarImageURL = ""
 
-    @Published var currentUser: MUser?
-    @Published var isProfileSaved = false
-    
     @Published var errorMessage: String?
-    @Published var registrationSuccess = false // Validator for navigating to registration Success view
-    @Published var registrationFailure = false
+
+    @Published var isProfileSaved = false
+    @Published var registrationSuccess = false  // Validator for navigating to registration Success view
     let db = Firestore.firestore()
 
-//MARK: Read User Data
-    func loadUserProfile() {
+    private var cancellables = Set<AnyCancellable>()
+    private let profileLoader = ProfileLoader()
+    
+    init() {
+        loadUserProfile()
+    }
+        
+//MARK: Load User Data
+    // Метод для загрузки профиля пользователя
+    private func loadUserProfile() {
         guard let uid = AuthService.shared.currentUserUID else {
             self.errorMessage = "Не удалось получить UID текущего пользователя."
             print("Ошибка: UID не получен.")
             return
         }
-
-        FirestoreService.shared.fetchUserProfile(uid: uid) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let user):
-                    self?.username = user.username
-                    self?.description = user.description
-                    self?.selectedSex = (user.sex == "Male") ? 0 : 1
-                    self?.avatarImageURL = user.avatarStringURL
-                    print("Профиль пользователя успешно загружен: \(user.username)")
-                    
-                    // Загрузка аватара, если есть URL
-                    self?.loadAvatarImage(from: user.avatarStringURL)
-                    
-                case .failure(let error):
-                    self?.errorMessage = error.localizedDescription
+        
+        profileLoader.userProfilePublisher(uid: uid)
+            .receive(on: DispatchQueue.main) // Обновляем данные на главном потоке
+            .sink(receiveCompletion: { completion in
+                if case .failure(let error) = completion {
+                    self.errorMessage = error.localizedDescription
                     print("Ошибка загрузки профиля пользователя: \(error.localizedDescription)")
                 }
-            }
-        }
+            }, receiveValue: { [weak self] user in
+                self?.username = user.username
+                self?.description = user.description
+                self?.selectedSex = (user.sex == "Male") ? 0 : 1
+                print("Профиль пользователя успешно загружен: \(user.username)")
+                
+                // Запускаем поток для загрузки аватара
+                self?.loadAvatarImage(from: user.avatarStringURL)
+            })
+            .store(in: &cancellables)
     }
-        
+    
+    // Метод для загрузки аватара пользователя
     private func loadAvatarImage(from urlString: String) {
-        guard !urlString.isEmpty, let url = URL(string: urlString) else {
-            print("URL аватара пустой или некорректный")
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            if let error = error {
-                print("Ошибка загрузки аватара: \(error.localizedDescription)")
-                return
-            }
-            
-            guard let data = data, let image = UIImage(data: data) else {
-                print("Не удалось преобразовать данные в изображение")
-                return
-            }
-            
-            DispatchQueue.main.async {
+        profileLoader.avatarImagePublisher(from: urlString)
+            .receive(on: DispatchQueue.main) // Обновляем данные на главном потоке
+            .sink { [weak self] image in
                 self?.avatarImage = image
-                print("Аватар пользователя успешно загружен")
+                if image != nil {
+                    print("Аватар пользователя успешно загружен")
+                } else {
+                    print("Не удалось загрузить аватар")
+                }
             }
-        }.resume()
+            .store(in: &cancellables)
     }
     
 //MARK: Save User Data
@@ -125,7 +117,6 @@ class SignUpViewModel: ObservableObject {
                     self?.registrationSuccess = true
                     print("Регистрация прошла успешно для пользователя: \(user.email ?? "без email")")
                 case .failure(let error):
-                    self?.registrationFailure = true
                     self?.errorMessage = error.localizedDescription
                     print("Ошибка при регистрации: \(error.localizedDescription)")
                 }
@@ -143,7 +134,7 @@ class SignUpViewModel: ObservableObject {
     }
     
     var isPasswordValid: Bool {
-        password == confirmPassword
+        !password.isEmpty && password == confirmPassword
     }
     // Validation for form data fields before submission
     var isFormValid: Bool {

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SetupProfileView: View {
-    @StateObject private var viewModel = SignUpViewModel()
+    @ObservedObject var viewModel: SignUpViewModel
     
     @State private var isNameValid = true
     @State private var isBioValid = true
@@ -57,15 +57,25 @@ struct SetupProfileView: View {
                         },
                         mod: true)
                 }
-                .navigationDestination(isPresented: $viewModel.isProfileSaved) { TabBarView() }
-            }.onAppear { viewModel.loadUserProfile() }
-
-            //        .navigationBarBackButtonHidden(true)
+                .fullScreenCover(isPresented: $viewModel.isProfileSaved) {
+                    TabBarView()
+                }
+            }
             .hideKeyboard()
         }
     }
 }
 
-#Preview {
-    SetupProfileView()
+
+struct SetupProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+        // Создаем экземпляр SignUpViewModel с тестовыми данными
+        let previewViewModel = SignUpViewModel()
+        previewViewModel.username = "Preview User"
+        previewViewModel.description = "This is a preview description."
+        previewViewModel.selectedSex = 0 // Например, "Male"
+        previewViewModel.avatarImage = UIImage(named: "avatar") // Убедитесь, что такой ресурс существует
+        
+        return SetupProfileView(viewModel: previewViewModel)
+    }
 }

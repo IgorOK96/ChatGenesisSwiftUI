@@ -9,14 +9,11 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject private var viewModel = LoginViewModel()
-    @State private var isPasswordValid = true
     @State private var isEmailValid = true
-    
     @State  private var emailGo = false
     
     @FocusState private var isFocused: Bool // Focus state for TextField
 
-    
     var body: some View {
         NavigationStack {
             VStack(spacing: 25) {
@@ -55,7 +52,7 @@ struct LoginView: View {
                     
                     TextFieldView(
                         text: $viewModel.password,
-                        isValid: $isPasswordValid,
+                        isValid: $isEmailValid,
                         placeholder: "Password",
                         errorText: "Wrong Password"
                     )
@@ -67,10 +64,15 @@ struct LoginView: View {
                     title:"Login",
                     action:{
                         viewModel.updateLogError()
-                        isEmailValid = viewModel.loginFals
-                        isPasswordValid = viewModel.loginFals
                         
-                        if viewModel.validLog { viewModel.login() }
+                        guard viewModel.validLog else { return
+                            isEmailValid = viewModel.validLog }
+                        
+                        viewModel.login()
+                        
+                        guard viewModel.loginSuccess else { return
+                            isEmailValid = viewModel.loginSuccess
+                        }
                     },
                     mod: true)
                     .offset(y: -30)
@@ -95,6 +97,4 @@ struct LoginView: View {
 }
 
 
-#Preview {
-    LoginView()
-}
+

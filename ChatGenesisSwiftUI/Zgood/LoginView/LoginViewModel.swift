@@ -11,15 +11,13 @@ import GoogleSignIn
 import SwiftUICore
 
 class LoginViewModel: ObservableObject {
-//    @StateObject private var viewModel = SignUpViewModel()
 
     @Published var email = ""
     @Published var password = ""
     
     @Published var logError = ""
     @Published var isShowingGoogleSignIn = false
-    @Published var errorMessage: ErrorMessage? // Use ErrorMessage type here
-    @Published var loginFals = false // Для отслеживания успешного входа
+    @Published var errorMessage: ErrorMessage?
     @Published var loginSuccess = false // Для отслеживания успешного входа
     
     struct ErrorMessage: Identifiable {
@@ -54,7 +52,6 @@ class LoginViewModel: ObservableObject {
                     print("Вход выполнен для пользователя: \(user.email ?? "без email")")
                 case .failure(let error):
                     self?.errorMessage = ErrorMessage(message: error.localizedDescription)
-                    self?.loginFals = true
                     print("Ошибка при входе: \(error.localizedDescription)")
                 }
             }

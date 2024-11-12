@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct TabBarView: View {
+    @StateObject private var signVM = SignUpViewModel()
 
+    // Создаем ViewModel здесь
+    
     @State private var selectedTab = 0
     @State private var isKeyboardVisible = false
     
@@ -19,7 +22,7 @@ struct TabBarView: View {
                     PeopleListView()
                         .tag(0)
                     
-                    ConversationsView()
+                    ChatListView(viewModel: signVM)
                         .tag(1)
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never)) // Hide page indicator
@@ -50,13 +53,14 @@ struct TabBarView: View {
                     .background(Color(.systemGray6))
                     .zIndex(1) // Set high z-index for the tab bar
                 }
-            }.navigationBarBackButtonHidden(true)
-                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
-                    isKeyboardVisible = true
-                }
-                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-                    isKeyboardVisible = false
-                }
+            }
+            .navigationBarBackButtonHidden(true)
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+                isKeyboardVisible = true
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                isKeyboardVisible = false
+            }
         }
     }
     
