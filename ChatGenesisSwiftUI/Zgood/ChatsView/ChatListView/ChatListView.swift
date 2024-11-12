@@ -10,6 +10,10 @@ import SwiftUI
 struct ChatListView: View {
     @ObservedObject var viewModel: SignUpViewModel
     @StateObject private var requestVM = RequestListViewModel()
+    @StateObject private var activeChatVM = ActiveChatsListViewModel()
+    @StateObject var currentUserVM = CurrentUserViewModel()
+
+
 
     @State private var searchText = ""
     @FocusState private var isFocused: Bool
@@ -57,7 +61,7 @@ struct ChatListView: View {
                         .font(.sansReg(33))
                         .padding(.horizontal, 20)
                     
-                    ActiveChatsListView(requestListVM: requestVM)
+                    ActiveChatsListView(activeChatsVM: activeChatVM, currentUser: currentUserVM.currentUser)
                 }
             }
             .sheet(isPresented: $setting) {

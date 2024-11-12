@@ -110,7 +110,13 @@ extension ChatsViewController {
         // Удаляем вызов отсутствующего метода
          messageInputBar.sendButton.applyGradients(cornerRadius: 10)
         messageInputBar.setRightStackViewWidthConstant(to: 56, animated: false)
-        messageInputBar.sendButton.contentEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 6, right: 30)
+        if #available(iOS 15.0, *) {
+            messageInputBar.sendButton.configuration = UIButton.Configuration.plain()
+            messageInputBar.sendButton.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 6, trailing: 30)
+        } else {
+            // Fallback for earlier versions of iOS
+            messageInputBar.sendButton.contentEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 6, right: 30)
+        }
         messageInputBar.sendButton.setSize(CGSize(width: 48, height: 48), animated: false)
         messageInputBar.middleContentViewPadding.right = -38
     }
