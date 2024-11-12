@@ -63,7 +63,15 @@ struct ActiveChatsListView: View {
                             }
 
                             Rectangle()
-                                .fill(LinearGradient(gradient: Gradient(colors: [.orange, .purple]), startPoint: .bottom, endPoint: .top))
+                                .fill(
+                                    LinearGradient(
+                                        gradient: Gradient(
+                                            colors: [.orange, .purple]
+                                        ),
+                                        startPoint: .bottom,
+                                        endPoint: .top
+                                    )
+                                )
                                 .frame(width: 15, height: 80)
                                 .cornerRadius(20)
                         }

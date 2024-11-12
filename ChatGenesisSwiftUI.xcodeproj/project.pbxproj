@@ -24,29 +24,17 @@
 		9AE529C52CE37EA600C013E8 /* Exceptions for "ChatGenesisSwiftUI" folder in "ChatGenesisSwiftUI" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Data/ChatGenesisSwiftUI.xcdatamodeld,
 				Info.plist,
 			);
 			target = 9A6F42CA2CDFCA590060910F /* ChatGenesisSwiftUI */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		9AE529C62CE37EA600C013E8 /* Exceptions for "ChatGenesisSwiftUI" folder in "Compile Sources" phase from "ChatGenesisSwiftUI" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 9A6F42C72CDFCA590060910F /* Sources */;
-			membershipExceptions = (
-				Data/ChatGenesisSwiftUI.xcdatamodeld,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		9AE529922CE37EA600C013E8 /* ChatGenesisSwiftUI */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				9AE529C52CE37EA600C013E8 /* Exceptions for "ChatGenesisSwiftUI" folder in "ChatGenesisSwiftUI" target */,
-				9AE529C62CE37EA600C013E8 /* Exceptions for "ChatGenesisSwiftUI" folder in "Compile Sources" phase from "ChatGenesisSwiftUI" target */,
 			);
 			path = ChatGenesisSwiftUI;
 			sourceTree = "<group>";

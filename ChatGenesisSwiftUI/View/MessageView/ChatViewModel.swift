@@ -57,20 +57,31 @@ class ChatViewModel: ObservableObject {
         let imageName = UUID().uuidString
         let ref = Storage.storage().reference().child("chat_images").child("\(imageName).jpg")
 
-        ref.putData(imageData, metadata: nil) { [weak self] metadata, error in
+        ref.putData(imageData, metadata: nil) {
+            [weak self] metadata,
+            error in
             if let error = error {
                 print("Ошибка загрузки изображения: \(error)")
                 return
             }
             
-            ref.downloadURL { url, error in
+            ref.downloadURL {
+                url,
+                error in
                 if let error = error {
                     print("Ошибка получения URL: \(error)")
                     return
                 }
                 
                 if let url = url {
-                    let message = MMessage(user: self?.user ?? MUser(id: "unknown", username: "unknown"), content: url.absoluteString, isImage: true)
+                    let message = MMessage(
+                        user: self?.user ?? MUser(
+                            id: "unknown",
+                            username: "unknown"
+                        ),
+                        content: url.absoluteString,
+                        isImage: true
+                    )
                     self?.sendMessage(message: message)
                 }
             }
@@ -104,21 +115,4 @@ class ChatViewModel: ObservableObject {
     }
 }
 
-//#Preview {
-//    ChatViewModel()
-//}
 
-
-//func sendMessage() {
-//    let message = MMessage(user: user, content: text)
-//    FirestoreService.shared.sendMessage(chat: chat, message: message) { result in
-//        switch result {
-//        case .success:
-//            DispatchQueue.main.async {
-//                self.text = ""
-//            }
-//        case .failure(let error):
-//            print(error.localizedDescription)
-//        }
-//    }
-//}
