@@ -24,7 +24,8 @@ struct HideKeyboardModifier: ViewModifier {
 extension View {
  func hideKeyboard() -> some View {
   self.modifier(HideKeyboardModifier())
- }
+}
+    
 }
 extension Font {
     static func sansReg(_ size: CGFloat) -> Font {

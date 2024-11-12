@@ -21,20 +21,32 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		9AA602942CE1217300E51064 /* Exceptions for "ChatGenesisSwiftUI" folder in "ChatGenesisSwiftUI" target */ = {
+		9AE529C52CE37EA600C013E8 /* Exceptions for "ChatGenesisSwiftUI" folder in "ChatGenesisSwiftUI" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Data/ChatGenesisSwiftUI.xcdatamodeld,
 				Info.plist,
 			);
 			target = 9A6F42CA2CDFCA590060910F /* ChatGenesisSwiftUI */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		9AE529C62CE37EA600C013E8 /* Exceptions for "ChatGenesisSwiftUI" folder in "Compile Sources" phase from "ChatGenesisSwiftUI" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 9A6F42C72CDFCA590060910F /* Sources */;
+			membershipExceptions = (
+				Data/ChatGenesisSwiftUI.xcdatamodeld,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		9A6F42CD2CDFCA590060910F /* ChatGenesisSwiftUI */ = {
+		9AE529922CE37EA600C013E8 /* ChatGenesisSwiftUI */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				9AA602942CE1217300E51064 /* Exceptions for "ChatGenesisSwiftUI" folder in "ChatGenesisSwiftUI" target */,
+				9AE529C52CE37EA600C013E8 /* Exceptions for "ChatGenesisSwiftUI" folder in "ChatGenesisSwiftUI" target */,
+				9AE529C62CE37EA600C013E8 /* Exceptions for "ChatGenesisSwiftUI" folder in "Compile Sources" phase from "ChatGenesisSwiftUI" target */,
 			);
 			path = ChatGenesisSwiftUI;
 			sourceTree = "<group>";
@@ -62,9 +74,9 @@
 		9A6F42C22CDFCA590060910F = {
 			isa = PBXGroup;
 			children = (
-				9A6F42CD2CDFCA590060910F /* ChatGenesisSwiftUI */,
 				9AA601FF2CE0CBC800E51064 /* Frameworks */,
 				9A6F42CC2CDFCA590060910F /* Products */,
+				9AE529922CE37EA600C013E8 /* ChatGenesisSwiftUI */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,7 +111,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				9A6F42CD2CDFCA590060910F /* ChatGenesisSwiftUI */,
+				9AE529922CE37EA600C013E8 /* ChatGenesisSwiftUI */,
 			);
 			name = ChatGenesisSwiftUI;
 			packageProductDependencies = (

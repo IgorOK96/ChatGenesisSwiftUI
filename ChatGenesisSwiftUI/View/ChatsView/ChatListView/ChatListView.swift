@@ -13,9 +13,6 @@ struct ChatListView: View {
     @StateObject private var activeChatVM = ActiveChatsListViewModel()
     @StateObject var currentUserVM = CurrentUserViewModel()
 
-
-
-    @State private var searchText = ""
     @FocusState private var isFocused: Bool
     @State var isNew = false
     @State var setting = false
@@ -24,7 +21,7 @@ struct ChatListView: View {
     var body: some View {
         NavigationStack {
             HStack {
-                SearchControllerBar(searchText: $searchText)
+                SearchControllerBar(searchText: $activeChatVM.searchText)
                     .focused($isFocused)
                 Button(action: {
                     setting = true
@@ -38,8 +35,7 @@ struct ChatListView: View {
             }
             
             VStack(alignment: .leading, spacing: 20) {
-                
-                Text("16 chats confirmation waiting")
+                Text( "\(requestVM.waitingChats.count) chats confirmation waiting")
                     .font(.sansReg(25))
                     .padding(.horizontal, 20)
                 

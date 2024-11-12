@@ -10,7 +10,7 @@ import UIKit
 import FirebaseFirestore
 import MessageKit
 
-struct MMessage: Hashable, MessageType {
+struct MMessage: Hashable, MessageType, Identifiable {
    
     let content: String
     var sender: SenderType

@@ -51,7 +51,7 @@ class ChatsViewController: MessagesViewController {
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         
-        messageListener = ListenerService.shared.messagesObserve(chat: chat, completion: { (result) in
+        messageListener = FirestoreService.shared.messagesObserve(chat: chat, completion: { (result) in
             switch result {
                 
             case .success(let message):
@@ -60,7 +60,18 @@ class ChatsViewController: MessagesViewController {
                 print(error.localizedDescription)
             }
         })
+        
     }
+    
+    override var inputAccessoryView: UIView? {
+        return messageInputBar
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    
+    
     
     private func insertNewMessage(message: MMessage) {
         guard !messages.contains(message) else { return }
@@ -83,6 +94,7 @@ class ChatsViewController: MessagesViewController {
 // MARK: - ConfigureMessageInputBar
 extension ChatsViewController {
     func configureMessageInputBar() {
+        
         messageInputBar.isTranslucent = true
         messageInputBar.separatorLine.isHidden = true
         messageInputBar.backgroundView.backgroundColor = .white
@@ -102,23 +114,36 @@ extension ChatsViewController {
         messageInputBar.layer.shadowOpacity = 0.3
         messageInputBar.layer.shadowOffset = CGSize(width: 0, height: 4)
         
+        
         configureSendButton()
     }
     
+    
+    
     func configureSendButton() {
-        messageInputBar.sendButton.setImage(UIImage(named: "Sent"), for: .normal)
-        // Удаляем вызов отсутствующего метода
-         messageInputBar.sendButton.applyGradients(cornerRadius: 10)
+        // Устанавливаем изображение для кнопки отправки
+        if #available(iOS 13.0, *) {
+            let sendImage = UIImage(systemName: "paperplane.fill")
+            messageInputBar.sendButton.setImage(sendImage, for: .normal)
+            messageInputBar.sendButton.tintColor = UIColor.systemBlue // Можно изменить цвет
+        } else {
+            // Используйте альтернативное изображение для более ранних версий iOS
+            messageInputBar.sendButton.setTitle("Send", for: .normal)
+            messageInputBar.sendButton.setTitleColor(UIColor.systemBlue, for: .normal)
+        }
+        
+        // Убираем фон кнопки отправки
+        messageInputBar.sendButton.backgroundColor = .clear
+        
         messageInputBar.setRightStackViewWidthConstant(to: 56, animated: false)
         if #available(iOS 15.0, *) {
             messageInputBar.sendButton.configuration = UIButton.Configuration.plain()
             messageInputBar.sendButton.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 6, trailing: 30)
         } else {
-            // Fallback for earlier versions of iOS
             messageInputBar.sendButton.contentEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 6, right: 30)
         }
         messageInputBar.sendButton.setSize(CGSize(width: 48, height: 48), animated: false)
-        messageInputBar.middleContentViewPadding.right = -38
+        messageInputBar.middleContentViewPadding.right = -58
     }
 }
 
@@ -236,3 +261,4 @@ extension UIView {
         }
     }
 }
+

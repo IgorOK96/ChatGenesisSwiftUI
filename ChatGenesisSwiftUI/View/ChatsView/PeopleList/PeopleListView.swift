@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct PeopleListView: View {
     @StateObject private var listVM = PeopleListViewModel()
     @FocusState private var isFocused: Bool
+    @State var exit = false
 
     var verticalColumns: [GridItem] {
         [GridItem(.flexible()), GridItem(.flexible())]
@@ -18,9 +20,25 @@ struct PeopleListView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                SearchControllerBar(searchText: $listVM.searchText)  // Привязываем к searchText в ViewModel
-                    .focused($isFocused)
-                
+                HStack {
+                    SearchControllerBar(searchText: $listVM.searchText)  // Привязываем к searchText в ViewModel
+                        .focused($isFocused)
+                    
+                    Button(action: {
+                        do {
+                            try Auth.auth().signOut()
+                            exit = true // This should be whatever variable or logic you're using to track login state.
+                        } catch let signOutError as NSError {
+                            print("Error signing out: %@", signOutError)
+                        }
+                    }) {
+                        Image(systemName: "figure.walk.arrival") // You
+                            .foregroundColor(.purpleLite)
+                            .frame(width: 39, height: 39)
+                            .offset(x: -15, y: 5)
+                    }
+
+                }
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
                         Text("\(listVM.filteredUsers.count) people nearby")
@@ -49,10 +67,16 @@ struct PeopleListView: View {
                             }
                         }
                         .padding(.horizontal, 20)
+                        .navigationDestination(isPresented: $exit) { MainView() }
+
                     }
                     .hideKeyboard()
                 }
             }
         }
     }
+}
+
+#Preview {
+    PeopleListView()
 }

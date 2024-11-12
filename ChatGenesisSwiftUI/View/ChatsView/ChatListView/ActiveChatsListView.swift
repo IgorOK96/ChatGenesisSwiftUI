@@ -11,6 +11,7 @@ import SwiftUI
 
 struct ActiveChatsListView: View {
         @ObservedObject var activeChatsVM: ActiveChatsListViewModel
+    
         let currentUser: MUser?
 
         var body: some View {
@@ -21,7 +22,7 @@ struct ActiveChatsListView: View {
                             if let image = activeChatsVM.activeChatImages[chat.friendId] {
                                 if let user = currentUser {
                                     NavigationLink(
-                                        destination: ChatsViewWrapper(user: user, chat: chat)
+                                        destination: ChatView(user: user, chat: chat)
                                     ) {
                                         HStack {
                                             Image(uiImage: image)

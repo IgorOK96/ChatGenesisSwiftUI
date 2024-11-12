@@ -70,7 +70,7 @@ struct LoginView: View {
                         
                         viewModel.login()
                         
-                        guard viewModel.loginSuccess else { return
+                        guard !viewModel.loginSuccess else { return
                             isEmailValid = viewModel.loginSuccess
                         }
                     },

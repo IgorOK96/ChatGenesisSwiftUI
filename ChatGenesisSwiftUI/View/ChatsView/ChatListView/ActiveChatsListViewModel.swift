@@ -13,6 +13,8 @@ import UIKit
 class ActiveChatsListViewModel: ObservableObject {
     @Published var activeChats: [MChat] = []
     @Published var activeChatImages: [String: UIImage] = [:]
+    @Published var filteredChats: [MChat] = []  // Отфильтрованные чаты
+    @Published var searchText: String = ""      // Текст для поиска
 
     private var db = Firestore.firestore()
     private var cancellables = Set<AnyCancellable>()
@@ -23,9 +25,27 @@ class ActiveChatsListViewModel: ObservableObject {
 
     init() {
         fetchActiveChats()
+        setupSearchPublisher()
     }
 
-    // Метод для получения активных чатов с использованием Combine
+    // Метод для настройки поиска
+    private func setupSearchPublisher() {
+        $searchText
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .removeDuplicates()
+            .combineLatest($activeChats)
+            .map { (searchText, chats) -> [MChat] in
+                guard !searchText.isEmpty else {
+                    return chats
+                }
+                return chats.filter { chat in
+                    chat.friendUsername.localizedCaseInsensitiveContains(searchText)
+                }
+            }
+            .assign(to: &$filteredChats)
+    }
+
+    // Метод для получения активных чатов
     func fetchActiveChats() {
         activeChatsPublisher()
             .receive(on: DispatchQueue.main)
