@@ -70,9 +70,9 @@ struct LoginView: View {
                         
                         viewModel.login()
                         
-                        guard !viewModel.loginSuccess else { return
-                            isEmailValid = viewModel.loginSuccess
-                        }
+                        guard viewModel.loginSuccess else { return }
+                        isEmailValid = !viewModel.loginSuccess
+
                     },
                     mod: true)
                     .offset(y: -30)

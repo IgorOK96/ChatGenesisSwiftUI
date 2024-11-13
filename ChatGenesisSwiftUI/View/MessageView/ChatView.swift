@@ -95,7 +95,7 @@ struct ChatView: View {
             .background(Color(UIColor.systemBackground))
         }
         .padding(.bottom, keyboardHeight)
-        .hideKeyboard()
+//        .hideKeyboard()
         .animation(.easeOut(duration: 0.16), value: keyboardHeight)
         .edgesIgnoringSafeArea(keyboardHeight > 0 ? .bottom : [])
         .navigationBarTitle(chatVM.chat.friendUsername, displayMode: .inline)
