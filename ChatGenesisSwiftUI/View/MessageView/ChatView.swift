@@ -18,6 +18,8 @@ struct ChatView: View {
     @State private var showImagePicker = false
     @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
     @State private var errorMessage: String?
+    @FocusState private var isFocused: Bool
+
 
     init(user: MUser, chat: MChat) {
         self.chatVM = ChatViewModel(user: user, chat: chat)
@@ -57,6 +59,7 @@ struct ChatView: View {
                     .frame(minHeight: 30, maxHeight: 100)
                     .cornerRadius(8)
                     .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray))
+                    .focused($isFocused)
                 
                 Button(action: {
                     if let image = chatVM.sendImage {

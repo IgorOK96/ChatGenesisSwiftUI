@@ -53,6 +53,7 @@ struct SignUpView: View {
                     .autocorrectionDisabled(true)
                     .textInputAutocapitalization(.never)
                 }
+                .focused($isFocused)
                 PrimaryButton(
                     title: "Sign up",
                     action: {

@@ -13,6 +13,8 @@ struct RequestView: View {
     let name: String
     let chat: MChat
     @Environment(\.presentationMode) var presentationMode
+    @FocusState private var isFocused: Bool
+
 
     var body: some View {
         ZStack(alignment: .bottom) {

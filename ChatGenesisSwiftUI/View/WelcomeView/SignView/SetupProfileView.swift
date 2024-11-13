@@ -12,6 +12,8 @@ struct SetupProfileView: View {
     
     @State private var isNameValid = true
     @State private var isBioValid = true
+    @FocusState private var isFocused: Bool
+
     
     var body: some View {
         NavigationStack {
@@ -57,6 +59,7 @@ struct SetupProfileView: View {
                         },
                         mod: true)
                 }
+                .focused($isFocused)
                 .fullScreenCover(isPresented: $viewModel.isProfileSaved) {
                     TabBarView()
                 }

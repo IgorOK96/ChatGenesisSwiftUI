@@ -59,6 +59,7 @@ struct LoginView: View {
                     .autocorrectionDisabled(true)
                     .textInputAutocapitalization(.never)
                 }
+                .focused($isFocused)
                 
                 PrimaryButton(
                     title:"Login",
