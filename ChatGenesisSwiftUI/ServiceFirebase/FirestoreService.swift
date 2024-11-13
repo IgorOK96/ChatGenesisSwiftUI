@@ -181,5 +181,4 @@ class FirestoreService {
         return messagesListener
     }
 
-
 }

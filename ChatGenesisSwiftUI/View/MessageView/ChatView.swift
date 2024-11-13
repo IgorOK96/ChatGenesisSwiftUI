@@ -19,7 +19,6 @@ struct ChatView: View {
     @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
     @State private var errorMessage: String?
 
-    
     init(user: MUser, chat: MChat) {
         self.chatVM = ChatViewModel(user: user, chat: chat)
     }

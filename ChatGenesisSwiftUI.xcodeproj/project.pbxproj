@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A2A98882CE502E000378A78 /* README.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2A98872CE502E000378A78 /* README.swift */; };
 		9AA601EE2CE0C95400E51064 /* MessageKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9AA601ED2CE0C95400E51064 /* MessageKit */; };
 		9AA602012CE0CBC800E51064 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9AA602002CE0CBC800E51064 /* FirebaseAuth */; };
 		9AA602032CE0CBC800E51064 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9AA602022CE0CBC800E51064 /* FirebaseCore */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9A2A98872CE502E000378A78 /* README.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = README.swift; sourceTree = "<group>"; };
 		9A6F42CB2CDFCA590060910F /* ChatGenesisSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatGenesisSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -62,6 +64,7 @@
 		9A6F42C22CDFCA590060910F = {
 			isa = PBXGroup;
 			children = (
+				9A2A98872CE502E000378A78 /* README.swift */,
 				9AA601FF2CE0CBC800E51064 /* Frameworks */,
 				9A6F42CC2CDFCA590060910F /* Products */,
 				9AE529922CE37EA600C013E8 /* ChatGenesisSwiftUI */,
@@ -169,6 +172,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A2A98882CE502E000378A78 /* README.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
