@@ -56,24 +56,26 @@ struct ChatView: View {
                 }
                 
                 TextEditor(text: $chatVM.text)
-                    .frame(minHeight: 30, maxHeight: 100)
+                    .frame(minHeight: 30, maxHeight: 60)
                     .cornerRadius(8)
                     .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray))
                     .focused($isFocused)
                 
                 Button(action: {
+                    let trimmedText = chatVM.text.trimmingCharacters(in: .whitespacesAndNewlines)
                     if let image = chatVM.sendImage {
                         chatVM.sendImageMessage(image: image)
                         chatVM.sendImage = nil
-                    } else {
-                        let message = MMessage(user: chatVM.user, content: chatVM.text)
+                    } else if !trimmedText.isEmpty {
+                        let message = MMessage(user: chatVM.user, content: trimmedText)
                         chatVM.sendMessage(message: message)
+                        chatVM.text = "" // очищаем текст после отправки
                     }
                 }) {
                     Image(systemName: "paperplane.fill")
                         .font(.system(size: 24))
                 }
-                .disabled(chatVM.text.isEmpty && chatVM.sendImage == nil)
+                .disabled(chatVM.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && chatVM.sendImage == nil)
                 .confirmationDialog("Choose how you want to add a photo  \n Size no more 5 Mb",
                                     isPresented: $showConfirmationDialog, titleVisibility: .visible) {
                     Button("Camera") {
@@ -98,21 +100,13 @@ struct ChatView: View {
             .background(Color(UIColor.systemBackground))
         }
         .padding(.bottom, keyboardHeight)
-//        .hideKeyboard()
+        .hideKeyboard()
         .animation(.easeOut(duration: 0.16), value: keyboardHeight)
         .edgesIgnoringSafeArea(keyboardHeight > 0 ? .bottom : [])
         .navigationBarTitle(chatVM.chat.friendUsername, displayMode: .inline)
         .onAppear {
             chatVM.subscribeToMessages()
         }
-                .onDisappear {
-                    chatVM.unsubscribe()
-                    stopObservingKeyboard()
-                }
-        }
-        
-        private func stopObservingKeyboard() {
-            keyboardCancellable?.cancel()
         }
     }
 

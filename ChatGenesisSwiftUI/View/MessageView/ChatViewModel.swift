@@ -15,7 +15,6 @@ class ChatViewModel: ObservableObject {
     @Published var text: String = ""
     @Published var sendImage: UIImage?
 
-
     // Объединенный массив с меткой отправителя
     @Published var combinedMessagesWithSender: [(message: MMessage, isCurrentUser: Bool)] = []
 
