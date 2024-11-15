@@ -21,6 +21,7 @@ Project Structure
 	•	AuthService: Manages user authentication with Firebase.
 	•	FirestoreService: Handles data interactions with Firestore.
 	•	StorageService: Manages file storage operations in Firebase.
+ 
 	•	ModelChat
 	•	MChat: Represents a chat session.
 	•	MMessage: Represents a message in a chat.
