@@ -28,11 +28,7 @@ class ChatViewModel: ObservableObject {
         self.user = user
         self.chat = chat
         
-        $messages
-            .sink { [weak self] _ in
-                self?.setupMessageFilter()
-            }
-            .store(in: &cancellables)
+        setupMessageFilter()
     }
 
     func subscribeToMessages() {
