@@ -1,67 +1,157 @@
 Chat App
 
-This SwiftUI-based chat application includes real-time messaging, user authentication. The app leverages Firebase services for backend storage and combines reactive programming with Combine.
+Chat App — это современное приложение для обмена сообщениями, созданное на основе SwiftUI.
+Оно поддерживает реальное время, загрузку изображений, управление пользователями и обеспечивает надежное взаимодействие благодаря интеграции с Firebase.
 
-Table of Contents
+Содержание
 
-	1.	Project Structure
-	2.	Features
-	3.	Configuration
-	4.	Dependencies
-	5.	Getting Started
-	6.	Troubleshooting
+	1.	Описание проекта
+	2.	Функциональность
+	3.	Структура проекта
+	4.	Настройка и конфигурация
+	5.	Зависимости
+	6.	Использование
+	7.	Особенности реализации
+	8.	Трудности и решения
 
-Project Structure
+Описание проекта
 
-	•	Service
-	•	ImagePicker: Utility to pick and handle image selection.
-	•	NetworkMonitor: Monitors network connectivity status.
+Chat App — это приложение, позволяющее пользователям:
+
+	•	Обмениваться текстовыми и мультимедийными сообщениями.
+	•	Управлять своими чатами.
+	•	Искать и добавлять пользователей.
+	•	Загрузить и просматривать изображения, используя кэширование.
+
+Проект разработан с применением архитектурных принципов MVVM и реактивного программирования с помощью Combine.
+
+Функциональность
+
+	•	Аутентификация:
+	•	Регистрация и вход через email.
+	•	Поддержка Firebase Authentication.
  
-	•	ServiceFirebase
-	•	AuthService: Manages user authentication with Firebase.
-	•	FirestoreService: Handles data interactions with Firestore.
-	•	StorageService: Manages file storage operations in Firebase.
+	•	Чаты:
+	•	Реальные чаты с поддержкой сообщений в реальном времени.
+	•	Отправка изображений и текста.
+	•	Разделение на активные чаты и ожидающие.
  
-	•	ModelChat
-	•	MChat: Represents a chat session.
-	•	MMessage: Represents a message in a chat.
-	•	MUser: Represents a user in the app.
+	•	Пользователи:
+	•	Поиск пользователей.
+	•	Добавление в друзья.
+	•	Поддержка отображения профиля.
  
-	•	View
-	•	ChatListView, MessageView, RequestView: Various views for chat interaction and management.
- ![image](https://github.com/user-attachments/assets/828723a7-f272-40ad-86f5-645fc18220a7) ![image](https://github.com/user-attachments/assets/59e82061-fec5-4bd4-b23f-e811776b7d73) ![image](https://github.com/user-attachments/assets/ca4a6456-7e66-4b36-a454-7b11c0b42acf)
+	•	Изображения:
+	•	Загрузка изображений через Alamofire.
+	•	Кэширование с помощью NSCache.
+	•	Поиск и фильтрация:
+	•	Реализована система поиска по чатам и пользователям.
 
-	•	PeopleList: Displays a list of available contacts.
-  ![image](https://github.com/user-attachments/assets/d3075705-f0e1-4211-b6f1-83b59d99ada5) ![image](https://github.com/user-attachments/assets/5a23a243-822c-495f-86ff-525268719293)
- ![image](https://github.com/user-attachments/assets/db76d0e5-1e41-4a32-afa7-bf0d1e3d0bcf)
+Структура проекта
+
+├── Service
+│   ├── ImageService.swift         // Кэширование и загрузка изображений
+│   ├── NetworkMonitor.swift       // Проверка сети
+├── ServiceFirebase
+│   ├── AuthService.swift          // Управление аутентификацией
+│   ├── FirestoreService.swift     // Взаимодействие с Firestore
+│   ├── StorageService.swift       // Загрузка файлов в Firebase Storage
+├── ModelChat
+│   ├── MChat.swift                // Модель чата
+│   ├── MMessage.swift             // Модель сообщения
+│   ├── MUser.swift                // Модель пользователя
+├── View
+│   ├── ChatListView               // Список чатов
+│   │   ├── ActiveChatsListView.swift
+│   │   ├── ChatListViewModel.swift
+│   ├── MessageView                // Окно сообщений
+│   │   ├── ChatView.swift
+│   │   ├── ChatViewModel.swift
+│   ├── PeopleSearch               // Поиск пользователей
+│   │   ├── PeopleListView.swift
+│   │   ├── PeopleListViewModel.swift
+│   ├── WelcomeView                // Аутентификация
+│       ├── LoginView.swift
+│       ├── SignUpView.swift
+│       ├── NoConnectionView.swift
+
+Настройка и конфигурация
+
+	1.	Firebase:
+	•	Добавьте файл GoogleService-Info.plist в проект.
+	•	Настройте Firebase Authentication, Firestore и Storage.
  
-	•	WelcomeView, LoginView, SignView: Handles user onboarding and authentication.
- ![image](https://github.com/user-attachments/assets/d11fe08a-f81c-4d9d-a7a8-cfdb4a73ad7f) ![image](https://github.com/user-attachments/assets/87348ae2-98b2-47f0-b949-c38340debd28) ![image](https://github.com/user-attachments/assets/31a2190d-e996-4fe9-9f72-2cd9c0d94606) ![image](https://github.com/user-attachments/assets/161b0476-6b79-4020-905d-ace5d09f4485)
+	2.	Dependencies:
+	•	Установите зависимости через Swift Package Manager:
+	•	Firebase (Auth, Firestore, Storage)
+	•	Alamofire (для загрузки изображений).
  
-	•	NoConnectionView: Shown when there is no network connectivity.
+	3.	Запуск:
+	•	Склонируйте проект.
+	•	Настройте Firebase консоль.
+	•	Запустите проект через Xcode.
 
-Features
+Зависимости
 
-	•	Real-Time Chat: Users can send and receive text and image messages.
-	•	User Authentication: Firebase-based email authentication.
-	•	Media Sharing: Users can select and send images using ImagePicker.
-	•	Offline Support: Basic offline support with NetworkMonitor for handling disconnections.
-	•	Search and Filtering: Ability to search and filter users in real-time.
+	•	SwiftUI — построение интерфейса.
+	•	Combine — управление потоками данных.
+	•	Firebase:
+	•	Auth для аутентификации.
+	•	Firestore для управления данными.
+	•	Storage для загрузки файлов.
+	•	Alamofire — загрузка изображений.
 
-Configuration
+Использование
 
-Firebase Setup
+1. Аутентификация
 
-	1.	Ensure you have configured Firebase with your project.
-	2.	Update GoogleService-Info.plist in your Xcode project.
-	3.	Enable Firestore, Authentication, and Storage services on Firebase.
+![image](https://github.com/user-attachments/assets/78e8947b-54ec-4fb9-aa4a-4c157729129b)
+![image](https://github.com/user-attachments/assets/63e8f0b9-fa8f-4d26-bba8-8aec938cae53)
+![image](https://github.com/user-attachments/assets/b0409e2c-0a00-4010-afa1-7626514d4c53)
 
 
-Dependencies
+2. Чаты
+![image](https://github.com/user-attachments/assets/94406b87-a8d0-419e-b06c-7eec8d9b9062)
+![image](https://github.com/user-attachments/assets/f965bd1c-8131-40e7-a321-91d25be9c7fb)
+![image](https://github.com/user-attachments/assets/871751a8-4b25-41f8-a7d5-7726d242ce01)
 
-	•	SwiftUI: For declarative UI design.
-	•	Combine: Used for reactive programming to manage data streams and asynchronous operations.
-	•	Firebase: For backend services, including authentication, Firestore, and storage.
+
+
+4. Поиск пользователей
+![image](https://github.com/user-attachments/assets/42d2ff5e-b154-4d79-8785-233465e6688c)
+![image](https://github.com/user-attachments/assets/bb7b941b-cf20-4ab2-8f8a-a8af5e580c23)
+![image](https://github.com/user-attachments/assets/8173b1d6-1c98-451c-87bb-bae7d7344d92)
+
+Особенности реализации
+
+	1.	ImageService:
+	•	Реализовано кэширование изображений с использованием NSCache.
+	•	Загрузка изображений через Alamofire.
+	2.	FirestoreService:
+	•	Потоки для наблюдения за изменениями в пользователях, чатах и сообщениях.
+	•	Использование Combine для реактивного управления данными.
+	3.	MVVM Архитектура:
+	•	Все бизнес-логика вынесена в ViewModel, что упрощает поддержку и тестирование.
+
+Трудности и решения
+
+1. Проблемы с производительностью при загрузке изображений
+
+	•	Реализовано кэширование изображений в NSCache.
+
+2. Устаревшие данные при изменениях в Firestore
+
+	•	Используются Publisher’ы с addSnapshotListener для автоматического обновления данных.
+
+3. Управление состоянием сети
+
+	•	Используется NetworkMonitor для отслеживания подключения к сети.
+
+Скриншоты интерфейса
+
+Добавьте сюда несколько скриншотов с основными экранами вашего приложения.
+
+Если есть что-то, что стоит уточнить или дополнить, дай знать!
 
 Getting Started
 
