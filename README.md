@@ -49,31 +49,8 @@ Chat App — это приложение, позволяющее пользов�
 
 Структура проекта
 
-├── Service
-│   ├── ImageService.swift         // Кэширование и загрузка изображений
-│   ├── NetworkMonitor.swift       // Проверка сети
-├── ServiceFirebase
-│   ├── AuthService.swift          // Управление аутентификацией
-│   ├── FirestoreService.swift     // Взаимодействие с Firestore
-│   ├── StorageService.swift       // Загрузка файлов в Firebase Storage
-├── ModelChat
-│   ├── MChat.swift                // Модель чата
-│   ├── MMessage.swift             // Модель сообщения
-│   ├── MUser.swift                // Модель пользователя
-├── View
-│   ├── ChatListView               // Список чатов
-│   │   ├── ActiveChatsListView.swift
-│   │   ├── ChatListViewModel.swift
-│   ├── MessageView                // Окно сообщений
-│   │   ├── ChatView.swift
-│   │   ├── ChatViewModel.swift
-│   ├── PeopleSearch               // Поиск пользователей
-│   │   ├── PeopleListView.swift
-│   │   ├── PeopleListViewModel.swift
-│   ├── WelcomeView                // Аутентификация
-│       ├── LoginView.swift
-│       ├── SignUpView.swift
-│       ├── NoConnectionView.swift
+![image](https://github.com/user-attachments/assets/130abcb3-8756-49f8-9c54-3ec7f546e4b0)
+
 
 Настройка и конфигурация
 
