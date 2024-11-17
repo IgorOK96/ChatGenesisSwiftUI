@@ -88,13 +88,15 @@ Chat App — это приложение, позволяющее пользов�
 
 
 2. Чаты
+
 ![image](https://github.com/user-attachments/assets/94406b87-a8d0-419e-b06c-7eec8d9b9062)
 ![image](https://github.com/user-attachments/assets/f965bd1c-8131-40e7-a321-91d25be9c7fb)
 ![image](https://github.com/user-attachments/assets/871751a8-4b25-41f8-a7d5-7726d242ce01)
 
 
 
-4. Поиск пользователей
+3. Поиск пользователей
+   
 ![image](https://github.com/user-attachments/assets/42d2ff5e-b154-4d79-8785-233465e6688c)
 ![image](https://github.com/user-attachments/assets/bb7b941b-cf20-4ab2-8f8a-a8af5e580c23)
 ![image](https://github.com/user-attachments/assets/8173b1d6-1c98-451c-87bb-bae7d7344d92)
