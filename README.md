@@ -81,7 +81,4 @@ Troubleshooting
 
 	•	Network Issues: Check NetworkMonitor to confirm connectivity status.
 	•	Image Loading Errors: Ensure images are stored and retrieved from Firebase Storage correctly.
-	•	WebRTC Setup: Ensure correct configuration of ICE servers for stable peer-to-peer connections.
 	•	Authentication Errors: Double-check Firebase authentication setup and permissions.
-
-Let me know if you’d like any section expanded or if you need further customization based on specific project functionalities!
