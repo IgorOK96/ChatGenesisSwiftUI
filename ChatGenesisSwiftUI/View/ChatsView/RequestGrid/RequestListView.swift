@@ -8,16 +8,15 @@
 import SwiftUI
 
 struct RequestListView: View {
-    @ObservedObject var requestVM: RequestListViewModel
+    @ObservedObject var chatVM: ChatsListViewModel
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
-                ForEach(requestVM.waitingChats, id: \.friendId) { chat in
-                    if let image = requestVM.waitingChatImages[chat.friendId] {
+                ForEach(chatVM.filteredWait, id: \.friendId) { chat in
+                    if let image = chatVM.waitActiveImages[chat.friendId] {
                         NavigationLink(
                             destination: RequestView(
-                                requestListVM: requestVM,
                                 imageAv: image,
                                 name: chat.friendUsername,
                                 chat: chat

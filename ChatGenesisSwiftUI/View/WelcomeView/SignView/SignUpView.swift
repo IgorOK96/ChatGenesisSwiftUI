@@ -59,7 +59,7 @@ struct SignUpView: View {
                     action: {
                         isEmailValid = viewModel.validateEmail
                         isPassword = viewModel.isPasswordValid
-                        if viewModel.isFormValid  {viewModel.registerEmail()}
+                        if viewModel.isFormValid {viewModel.registerEmail()}
                     },
                     mod: true)
                     .offset(y: -10)

@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct ChatListView: View {
-    @ObservedObject var viewModel: SignUpViewModel
-    @StateObject private var requestVM = RequestListViewModel()
-    @StateObject private var activeChatVM = ActiveChatsListViewModel()
-    @StateObject var currentUserVM = CurrentUserViewModel()
+    @ObservedObject var userVM : SignUpViewModel
+    @StateObject private var chatListVM = ChatsListViewModel()
 
     @FocusState private var isFocused: Bool
     @State var isNew = false
@@ -21,7 +19,7 @@ struct ChatListView: View {
     var body: some View {
         NavigationStack {
             HStack {
-                SearchControllerBar(searchText: $activeChatVM.searchText)
+                SearchControllerBar(searchText: $chatListVM.searchText)
                     .focused($isFocused)
                 Button(action: {
                     setting = true
@@ -35,11 +33,11 @@ struct ChatListView: View {
             }
             
             VStack(alignment: .leading, spacing: 20) {
-                Text( "\(requestVM.waitingChats.count) chats confirmation waiting")
+                Text( "\(chatListVM.waitingChats.count) chats confirmation waiting")
                     .font(.sansReg(25))
                     .padding(.horizontal, 20)
                 
-                RequestListView(requestVM: requestVM)
+                RequestListView(chatVM: chatListVM)
                 
                 Rectangle()
                     .fill(
@@ -57,11 +55,11 @@ struct ChatListView: View {
                         .font(.sansReg(33))
                         .padding(.horizontal, 20)
                     
-                    ActiveChatsListView(activeChatsVM: activeChatVM, currentUser: currentUserVM.currentUser)
+                    ActiveChatsListView(activeChatsVM: chatListVM, currentUser: userVM.currentUser)
                 }
             }
             .sheet(isPresented: $setting) {
-                SetupProfileView(viewModel: viewModel) // Передаем уже загруженный ViewModel
+                SetupProfileView(viewModel: userVM) // Передаем уже загруженный ViewModel
             }
             .hideKeyboard()
         }

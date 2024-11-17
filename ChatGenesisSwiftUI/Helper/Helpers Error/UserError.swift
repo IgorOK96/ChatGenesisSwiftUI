@@ -29,3 +29,9 @@ extension UserError: LocalizedError {
         }
     }
 }
+
+// Создаем структуру для хранения сообщения алерта
+struct AlertMessage: Identifiable {
+    let id = UUID()
+    let message: String
+}

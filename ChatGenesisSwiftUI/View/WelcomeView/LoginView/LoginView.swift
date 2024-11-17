@@ -10,8 +10,8 @@ import SwiftUI
 struct LoginView: View {
     @StateObject private var viewModel = LoginViewModel()
     @State private var isEmailValid = true
-    @State  private var emailGo = false
-    
+    @State private var isLoginValid = true
+    @State private var emailGo = false
     @FocusState private var isFocused: Bool // Focus state for TextField
 
     var body: some View {
@@ -52,7 +52,7 @@ struct LoginView: View {
                     
                     TextFieldView(
                         text: $viewModel.password,
-                        isValid: $isEmailValid,
+                        isValid: $isLoginValid,
                         placeholder: "Password",
                         errorText: "Wrong Password"
                     )
@@ -66,14 +66,22 @@ struct LoginView: View {
                     action:{
                         viewModel.updateLogError()
                         
-                        guard viewModel.validLog else { return
-                            isEmailValid = viewModel.validLog }
+                        guard viewModel.validateEmail else { return
+                            isEmailValid = viewModel.validateEmail }
+                        
+                        guard viewModel.validPassword else {
+                            return isLoginValid = viewModel.validPassword }
                         
                         viewModel.login()
                         
-                        guard viewModel.loginSuccess else { return }
-                        isEmailValid = !viewModel.loginSuccess
-
+                        guard viewModel.loginSuccess else {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { 
+                                isEmailValid = false
+                                isLoginValid = false
+                                return
+                            }
+                            return
+                        }
                     },
                     mod: true)
                     .offset(y: -30)

@@ -22,7 +22,7 @@ struct TabBarView: View {
                     PeopleListView()
                         .tag(0)
                     
-                    ChatListView(viewModel: signVM)
+                    ChatListView(userVM: signVM)
                         .tag(1)
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never)) // Hide page indicator

@@ -21,7 +21,7 @@ struct PeopleListView: View {
         NavigationStack {
             VStack {
                 HStack {
-                    SearchControllerBar(searchText: $listVM.searchText)  // Привязываем к searchText в ViewModel
+                    SearchControllerBar(searchText: $listVM.searchText)
                         .focused($isFocused)
                     
                     Button(action: {

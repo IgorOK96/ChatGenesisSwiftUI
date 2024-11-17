@@ -31,7 +31,7 @@ struct ChatView: View {
                 ScrollView {
                     VStack(spacing: 8) {
                         ForEach(chatVM.combinedMessagesWithSender, id: \.message.id) { (message, isCurrentUser) in
-                            MessageRow(message: message, isCurrentUser: isCurrentUser)
+                            MessageRow(message: message, isCurrentUser: isCurrentUser, chatVM: chatVM)
                                 .id(message.id)
                         }
                     }
@@ -104,50 +104,46 @@ struct ChatView: View {
         .animation(.easeOut(duration: 0.16), value: keyboardHeight)
         .edgesIgnoringSafeArea(keyboardHeight > 0 ? .bottom : [])
         .navigationBarTitle(chatVM.chat.friendUsername, displayMode: .inline)
-        .onAppear {
-            chatVM.subscribeToMessages()
-        }
         }
     }
 
 struct MessageRow: View {
     var message: MMessage
     var isCurrentUser: Bool
+    @ObservedObject var chatVM: ChatViewModel
 
     var body: some View {
         HStack {
             if isCurrentUser {
                 Spacer()
             }
-            
-            if message.isImage, let imageUrl = URL(string: message.content) {
-                // Отображаем изображение, если это сообщение с изображением
-                AsyncImage(url: imageUrl) { phase in
-                    switch phase {
-                    case .empty:
-                        ProgressView() // Показать индикатор загрузки
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 200, height: 200)
-                            .cornerRadius(12)
-                    case .failure:
-                        Text("Не удалось загрузить изображение")
-                    @unknown default:
-                        EmptyView()
-                    }
+
+            if message.isImage {
+             let imageUrl = message.content
+                // Проверяем, есть ли изображение в кэше
+                if let cachedImage = chatVM.images[imageUrl] {
+                    Image(uiImage: cachedImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 200, height: 200)
+                        .cornerRadius(12)
+                } else {
+                    // Если изображения нет, показываем индикатор загрузки и загружаем его
+                    ProgressView()
+                        .frame(width: 200, height: 200)
+                        .onAppear {
+                            chatVM.loadImage(for: imageUrl)
+                        }
                 }
-                .frame(width: 200, height: 200)
             } else {
-                // Отображаем текст, если это обычное текстовое сообщение
+                // Если это текстовое сообщение
                 Text(message.content)
                     .padding()
                     .background(isCurrentUser ? Color.purpleLite.opacity(0.7) : Color.orange.opacity(0.7))
                     .foregroundColor(isCurrentUser ? .white : .black)
                     .cornerRadius(12)
             }
-            
+
             if !isCurrentUser {
                 Spacer()
             }

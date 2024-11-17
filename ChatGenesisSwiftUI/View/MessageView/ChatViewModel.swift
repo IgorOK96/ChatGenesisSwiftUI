@@ -20,31 +20,51 @@ class ChatViewModel: ObservableObject {
 
     let user: MUser
     let chat: MChat
-    private var messageListener: ListenerRegistration?
     private var cancellables = Set<AnyCancellable>()
 
     init(user: MUser, chat: MChat) {
         self.user = user
         self.chat = chat
         
+        subscribeToMessages()
         setupMessageFilter()
-    }
 
-    func subscribeToMessages() {
-        messageListener = FirestoreService.shared.messagesObserve(chat: chat) { [weak self] result in
-            switch result {
-            case .success(let message):
-                DispatchQueue.main.async {
-                    self?.messages.append(message)
+    }
+    
+    @Published var images: [String: UIImage] = [:]
+    private let imageService = ImageService()
+    
+    func loadImage(for urlString: String) {
+        // Проверяем, есть ли изображение уже загружено
+        guard images[urlString] == nil else { return }
+        
+        // Используем ImageService для загрузки
+        imageService.loadImage(from: urlString) { [weak self] image in
+            DispatchQueue.main.async {
+                if let image = image {
+                    self?.images[urlString] = image
+                    print("Изображение успешно загружено и закэшировано")
+                } else {
+                    print("Не удалось загрузить изображение")
                 }
-            case .failure(let error):
-                print(error.localizedDescription)
             }
         }
     }
 
-    func unsubscribe() {
-        messageListener?.remove()
+    func subscribeToMessages() {
+        FirestoreService.shared.messagesPublisher(chat: chat)
+            .receive(on: DispatchQueue.main) // Обновляем UI на главном потоке
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("Наблюдение за сообщениями завершено.")
+                case .failure(let error):
+                    print("Ошибка наблюдения за сообщениями: \(error.localizedDescription)")
+                }
+            }, receiveValue: { [weak self] message in
+                self?.messages.append(message) // Добавляем новое сообщение
+            })
+            .store(in: &cancellables)
     }
 
     func sendImageMessage(image: UIImage) {
@@ -84,18 +104,18 @@ class ChatViewModel: ObservableObject {
     }
     
     func sendMessage(message: MMessage) {
-            // Метод для відправки повідомлення в Firestore
-            FirestoreService.shared.sendMessage(chat: chat, message: message) { result in
-                switch result {
-                case .success:
-                    DispatchQueue.main.async {
-                        self.text = ""
-                    }
-                case .failure(let error):
-                    print(error.localizedDescription)
+        // Метод для відправки повідомлення в Firestore
+        FirestoreService.shared.sendMessage(chat: chat, message: message) { result in
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    self.text = ""
                 }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
+    }
     
     private func setupMessageFilter() {
         $messages

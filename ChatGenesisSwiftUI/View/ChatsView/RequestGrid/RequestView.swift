@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RequestView: View {
-    @ObservedObject var requestListVM: RequestListViewModel
+    @StateObject private var requestListVM = RequestViewModel()
     let imageAv: UIImage
     let name: String
     let chat: MChat
@@ -38,7 +38,7 @@ struct RequestView: View {
                         colorTwo: .purple,
                         title: "ACCEPT",
                         action: {
-                            requestListVM.acceptRequest(chat: chat)
+                            requestListVM.changeToActive(chat: chat)
                             presentationMode.wrappedValue.dismiss()
                         }
                     )
@@ -48,7 +48,7 @@ struct RequestView: View {
                         colorTwo: .black,
                         title: "DENY",
                         action: {
-                            requestListVM.declineRequest(chat: chat)
+                            requestListVM.removeWaitingChat(chat: chat)
                             presentationMode.wrappedValue.dismiss()
                         }
                     )
@@ -69,7 +69,6 @@ struct RequestView: View {
 struct RequestView_Previews: PreviewProvider {
     static var previews: some View {
         RequestView(
-            requestListVM: RequestListViewModel(),
             imageAv: UIImage(systemName: "person.circle")!,
             name: "John Doe",
             chat: MChat(friendUsername: "John", friendAvatarStringURL: "http://example.com/avatar.jpg", friendId: "Hello!", lastMessageContent: "123")

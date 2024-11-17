@@ -8,17 +8,15 @@
 import Foundation
 import FirebaseAuth
 import GoogleSignIn
-import SwiftUICore
+import Combine
 
 class LoginViewModel: ObservableObject {
-
     @Published var email = ""
     @Published var password = ""
-    
     @Published var logError = ""
     @Published var isShowingGoogleSignIn = false
     @Published var errorMessage: ErrorMessage?
-    @Published var loginSuccess = false // Для отслеживания успешного входа
+    @Published var loginSuccess = false
     
     struct ErrorMessage: Identifiable {
         let id = UUID()
@@ -51,13 +49,14 @@ class LoginViewModel: ObservableObject {
                     self?.loginSuccess = true
                     print("Вход выполнен для пользователя: \(user.email ?? "без email")")
                 case .failure(let error):
+                    self?.loginSuccess = false
                     self?.errorMessage = ErrorMessage(message: error.localizedDescription)
                     print("Ошибка при входе: \(error.localizedDescription)")
                 }
             }
         }
     }
-    
+
     func updateLogError() {
         if !validateEmail {
             logError = "Invalid email format"
@@ -66,8 +65,8 @@ class LoginViewModel: ObservableObject {
         }
     }
      
-    var validLog: Bool {
-        return !password.isEmpty && validateEmail
+    var validPassword: Bool {
+        return password.count >= 6
     }
     
     var validateEmail: Bool {

@@ -10,16 +10,16 @@ import SwiftUI
 import SwiftUI
 
 struct ActiveChatsListView: View {
-        @ObservedObject var activeChatsVM: ActiveChatsListViewModel
+        @ObservedObject var activeChatsVM: ChatsListViewModel
     
         let currentUser: MUser?
 
         var body: some View {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 10) {
-                    ForEach(activeChatsVM.activeChats, id: \.friendId) { chat in
+                    ForEach(activeChatsVM.filteredActive, id: \.friendId) { chat in
                         HStack {
-                            if let image = activeChatsVM.activeChatImages[chat.friendId] {
+                            if let image = activeChatsVM.waitActiveImages[chat.friendId] {
                                 if let user = currentUser {
                                     NavigationLink(
                                         destination: ChatView(user: user, chat: chat)

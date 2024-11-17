@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SetupProfileView: View {
     @ObservedObject var viewModel: SignUpViewModel
-    
     @State private var isNameValid = true
     @State private var isBioValid = true
     @FocusState private var isFocused: Bool
